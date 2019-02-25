@@ -13,6 +13,14 @@ switch ($_POST["accion"]) {
 		insertar_usuarios();
 		break;
 
+		case 'consultar_slider':
+		consultar_slider();
+		break;
+
+		case 'insertar_slider':
+		insertar_slider();
+		break;
+
 	default:
 			# code...
 	break;
@@ -62,3 +70,30 @@ function insertar_usuarios(){
         }
     }
 }
+
+function consultar_slider(){
+	global $mysqli;
+	$consulta = "SELECT * FROM slider";
+	$resultado = mysqli_query($mysqli, $consulta);
+	$arreglo = [];
+	while($fila = mysqli_fetch_array($resultado)){
+		array_push($arreglo, $fila);
+	}
+	echo json_encode($arreglo); //Imprime el JSON ENCODEADO
+}
+
+function insertar_slider(){
+global $mysqli;
+	$img_slider = $_POST["imagen"];
+	$quote_slider = $_POST["texto"];	
+	$name_slider = $_POST["nombre"];	
+	$consulta1 = "INSERT INTO slider VALUES('','$img_slider','$quote_slider','$name_slider')";
+	$resultado1 = mysqli_query($mysqli, $consulta1);
+	$array = [];
+	while($fila1 = mysqli_fetch_array($resultado1)){
+		array_push($arreglo1, $fila1);
+	}
+	echo json_encode($arreglo1); //Imprime el JSON ENCODEADO
+}
+	    
+?>
