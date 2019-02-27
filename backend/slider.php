@@ -72,7 +72,7 @@
                 <div class="form-group">
                   <label for="imagen">Imagen</label>
                   <input type="file" id="imagen" name="imagen" accept="image/x-png,image/gif,image/jpeg" class="form-control"
-                 style="     padding-bottom: 10px;    height: 48px; ">
+                 style=" padding-bottom: 10px;    height: 48px; ">
                 </div>
                 <div class="form-group">
                   <label for="texto">Texto</label>
@@ -146,7 +146,10 @@
     });
     $("#guardar_datos").click(function(){
       let obj ={
-        "accion" : "insertar_slider"
+        "accion" : "insertar_slider",
+        "imagen" :  imagen,
+        "texto" : texto,
+        "nombre" : nombre
         
       }
       $("#form_data").find("input").each(function(){
@@ -165,7 +168,7 @@
        } else {
          $("#error").html("Hubo un error").fadeIn(); 
        }
-       
+
       });
     });
     $("#main").find(".cancelar").click(function(){

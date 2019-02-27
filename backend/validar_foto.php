@@ -1,9 +1,8 @@
 <?php 
 global $mysqli;
-$nombre = $_REQUEST["nombre"];
-$imagen = $_REQUEST["imagen"]["nombre"];
+$imagen = $_REQUEST["imagen"]["name"];
 $ruta = $_REQUEST["imagen"]["tmp_name"];
-$destino = "upload/".$imagen;
+$destino = "./upload".$imagen;
 copy($ruta, $destino);
 
 
