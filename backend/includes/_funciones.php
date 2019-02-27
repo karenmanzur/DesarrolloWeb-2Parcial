@@ -21,6 +21,14 @@ switch ($_POST["accion"]) {
 		insertar_slider();
 		break;
 
+		case 'eliminar_usuarios':
+		eliminar_registro($_POST['registro']);
+		break;
+
+		case 'editar_usuarios':
+		editar_usuarios($_POST['id']);
+		break;
+
 	default:
 			# code...
 	break;
@@ -35,6 +43,32 @@ function consultar_usuarios(){
 	}
 	echo json_encode($arreglo); //Imprime el JSON ENCODEADO
 }
+
+function eliminar_usuarios($id){
+	global $mysqli;
+	$query = "DELETE FROM usuarios WHERE id_usr = $id";
+	$resultado = mysqli_query($mysqli, $query);
+	if ($resultado) {
+		echo "Se eliminó correctamente";
+	} else {
+		echo "Se generó un error, intenta nuevamente";
+	}
+}
+
+	function editar_usuarios($id){
+		global $mysqli;
+		$nombre = $_POST['nombre_usr'];
+		$correo = $_POST['correo_usr'];
+		$telefono = $_POST['telefono_usr'];
+		$password = $_POST['password_usr'];
+			$sql = "UPDATE usuarios SET nombre_usr = '$nombre', correo_usr = '$correo', telefono_usr = '$telefono', pswd_usr = '$password' WHERE id_usr = '$id'";
+			$rsl = $mysqli->query($sql);
+			if ($rsl) {
+				echo "El usuario se editó correctamente";
+			}else{
+				echo "Se generó un error, intenta nuevamente";
+			}
+		}
 
 function login(){
 		// Conectar a la base de datos
@@ -83,7 +117,7 @@ function consultar_slider(){
 }
 
 function insertar_slider(){
-global $mysqli;
+	global $mysqli;
 	$img_slider = $_POST["imagen"];
 	$quote_slider = $_POST["texto"];	
 	$name_slider = $_POST["nombre"];	
@@ -95,5 +129,5 @@ global $mysqli;
 	}
 	echo json_encode($arreglo1); //Imprime el JSON ENCODEADO
 }
-	    
+	  
 ?>
