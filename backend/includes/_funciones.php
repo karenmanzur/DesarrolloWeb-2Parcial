@@ -21,12 +21,16 @@ switch ($_POST["accion"]) {
 		insertar_slider();
 		break;
 
-		case 'eliminar_usuarios':
-		eliminar_registro($_POST['registro']);
+		case 'eliminar_registro':
+		eliminar_usuario($_POST['registro']);
 		break;
 
 		case 'editar_usuarios':
-		editar_usuarios($_POST['id']);
+		editar_usuarios($_POST['registro']);
+		break;
+
+		case 'consultar_registro':
+		consultar_registro($_POST['registro']);
 		break;
 
 	default:
@@ -44,14 +48,23 @@ function consultar_usuarios(){
 	echo json_encode($arreglo); //Imprime el JSON ENCODEADO
 }
 
-function eliminar_usuarios($id){
+
+function consultar_registro($id){
+	global $mysqli;
+	$consulta = "SELECT * FROM usuarios where id_usr = $id";
+	$resultado = mysqli_query($mysqli, $consulta);
+	$fila = mysqli_fetch_array($resultado);
+	echo json_encode($fila); 
+}
+
+function eliminar_usuario($id){
 	global $mysqli;
 	$query = "DELETE FROM usuarios WHERE id_usr = $id";
 	$resultado = mysqli_query($mysqli, $query);
 	if ($resultado) {
-		echo "Se eliminó correctamente";
+		echo "1";
 	} else {
-		echo "Se generó un error, intenta nuevamente";
+		echo "0";
 	}
 }
 

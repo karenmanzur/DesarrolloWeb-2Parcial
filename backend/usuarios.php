@@ -60,7 +60,7 @@
         </div>
         <h2>Usuarios</h2>
         <div class="table-responsive view" id="show_data">
-          <table class="table table-striped table-sm" id="list-usuarios">
+          <table class="table table-striped table-sm" id="list_usuarios">
             <thead>
               <tr>
                 <th>Nombre</th>
@@ -98,8 +98,8 @@
             <div class="row">
               <div class="col">
                 <button type="button" class="btn btn-success" id="guardar_datos">Guardar</button>
-        <div class="alert alert-danger" id="infoD" style="display: none;"></div>
-        <div class="alert alert-success" id="infoS" style="display: none;"></div>
+        <div class="alert alert-danger" id="correcto" style="display: none;"></div>
+        <div class="alert alert-success" id="error" style="display: none;"></div>
               </div>
             </div>
           </div>
@@ -136,19 +136,16 @@
           <td>${e.nombre_usr}</td>
           <td>${e.telefono_usr}</td>
           <td>
-          <a href="#" data-id="${e.id_usr}">Editar</a>
-          <a href="#" data-id="${e.id_usr}">Eliminar</a>
+          <a href="#" data-id="${e.id_usr}" class="editar_registro">Editar</a>
+          <a href="#" data-id="${e.id_usr}" class="eliminar_registro">Eliminar</a>
           </td>
           </tr>
           `;
         });
-        $("#list-usuarios tbody").html(template);
+        $("#list_usuarios tbody").html(template);
       },"JSON");
     }
-    $(document).ready(function(){
-      consultar();
-      change_view();
-    });
+   
     $("#nuevo_registro").click(function(){
       change_view('insert_data');
     });
@@ -178,13 +175,65 @@
        $.post('includes/_funciones.php', obj, function(a) {
 
         if (a == "1") {
-           $("#infoS").html("Usuario Insertado Correctamente"); 
+           $("#correcto").html("Usuario Insertado Correctamente"); 
            $("#form_data")[0].reset();
          } else {
-           $("#infoD").html("Error al Insertar Usuario"); 
+           $("#error").html("Error al Insertar Usuario"); 
          }
 
        });
+    });
+
+ $("#list_usuarios").on("click",".eliminar_registro",function(e){
+        e.preventDefault();
+        let confirmacion = confirm('Desea eliminar este registro?');
+        if (confirmacion) {
+          let id = $(this).data('id'),
+          obj = {
+            "accion":"eliminar_registro",
+            "registro" : id
+          };
+          $.post("includes/_funciones.php",obj,function(r){
+            if (r == "1") {
+           $("#correcto").html("Usuario Eliminado Correctamente"); 
+          consultar();
+ 
+         } else {
+           $("#error").html("Error al Eliminar Usuario"); 
+         }
+
+          });
+
+          }else {
+           $("#error").html("Error al Eliminar Usuario"); 
+         }
+      });
+
+  $("#list_usuarios").on("click",".editar_registro",function(e){
+        e.preventDefault();
+          let id = $(this).data('id');
+          obj = {
+            "accion":"consultar_registro",
+            "registro" : id
+          };
+          $.post("includes/_funciones.php",obj,function(r){
+            if (r == "1") {
+           $("#correcto").html("Usuario Eliminado Correctamente"); 
+          consultar();
+ 
+         } else {
+           $("#error").html("Error al Eliminar Usuario"); 
+         }
+          });
+
+$("#list_usuarios").on("click",".editar_registro",function(){
+  change_view('insert_data');
+    });
+});
+
+  $(document).ready(function(){
+      consultar();
+      change_view();
     });
 
     $("#main").find(".cancelar").click(function(){
