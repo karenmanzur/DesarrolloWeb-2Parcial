@@ -51,7 +51,7 @@ function consultar_usuarios(){
 
 function consultar_registro($id){
 	global $mysqli;
-	$consulta = "SELECT * FROM usuarios where id_usr = $id";
+	$consulta = "SELECT * FROM usuarios where id_usr = $id LIMIT 1";
 	$resultado = mysqli_query($mysqli, $consulta);
 	$fila = mysqli_fetch_array($resultado);
 	echo json_encode($fila); 
@@ -67,21 +67,6 @@ function eliminar_usuario($id){
 		echo "0";
 	}
 }
-
-	function editar_usuarios($id){
-		global $mysqli;
-		$nombre = $_POST['nombre_usr'];
-		$correo = $_POST['correo_usr'];
-		$telefono = $_POST['telefono_usr'];
-		$password = $_POST['password_usr'];
-			$sql = "UPDATE usuarios SET nombre_usr = '$nombre', correo_usr = '$correo', telefono_usr = '$telefono', pswd_usr = '$password' WHERE id_usr = '$id'";
-			$rsl = $mysqli->query($sql);
-			if ($rsl) {
-				echo "El usuario se editó correctamente";
-			}else{
-				echo "Se generó un error, intenta nuevamente";
-			}
-		}
 
 function login(){
 		// Conectar a la base de datos
