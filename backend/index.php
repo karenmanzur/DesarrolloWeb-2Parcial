@@ -39,13 +39,12 @@
 			$.post("includes/_funciones.php", obj, function(){
 				
 			});
+
+			
 			// 3. Enviar a validar esos valores
 			// 4. En caso de ser válido, redireccionar a usuarios.php
 			// 5. En caso de no ser válido, enviar mensaje de error
 		});
 	</script>
-
-
-
 </body>
 </html>

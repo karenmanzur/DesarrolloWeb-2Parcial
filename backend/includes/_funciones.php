@@ -48,6 +48,19 @@ function consultar_usuarios(){
 	echo json_encode($arreglo); //Imprime el JSON ENCODEADO
 }
 
+function editar_usuarios(){
+	global $mysqli;
+	extract($_POST);
+	$consulta = "UPDATE usuarios SET nombre_usr = '$nombre', correo_usr = '$correo', 
+	pswd_usr = '$password', telefono_usr = '$telefono' WHERE id_usr = '$id' ";
+	$resultado = mysqli_query($mysqli, $consulta);
+	if($resultado){
+		echo "Se editó correctamente";
+	}else{
+		echo "Se generó un error, intentalo nuevamente";
+	}
+}
+
 
 function consultar_registro($id){
 	global $mysqli;
@@ -72,7 +85,7 @@ function login(){
 		// Conectar a la base de datos
 	global $mysqli;
 		// Si usuario y contraseña están vacíos imprimir 3 
-	$consulta = "SELECT * FROM USUARIOS WHERE correo_usr='$correo'";
+	$consulta = "SELECT * FROM USUARIOS WHERE correo_usr ='$correo'";
 	$resultado = mysqli($mysqli, $consulta);
 	$fila = mysqli_fetch_array($resultado);
 	if($fila["pswd_usr"] == "$password" ){

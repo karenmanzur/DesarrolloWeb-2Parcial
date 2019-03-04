@@ -1,3 +1,10 @@
+// <?php
+//  session_start();
+//  error_reporting(0);
+//  $varsesion = $_SESSION['user'];
+//  if (isset($varsesion)){
+//  ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -178,3 +185,10 @@
   </script>
 </body>
 </html>
+
+<?php 
+//  }
+ // else 
+  //{
+//header("Location:index.php");
+//  }

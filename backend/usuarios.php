@@ -1,3 +1,10 @@
+ <?php
+  session_start();
+  error_reporting(0);
+  $varsesion = $_SESSION['user'];
+  if (isset($varsesion)){
+  ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -28,12 +35,6 @@
       <nav class="col-md-2 d-none d-md-block bg-light sidebar">
         <div class="sidebar-sticky">
           <ul class="nav flex-column">
-            <li class="nav-item">
-              <a class="nav-link active" href="#">
-                <span data-feather="home"></span>
-                Dashboard <span class="sr-only">(current)</span>
-              </a>
-            </li>
             <li class="nav-item">
               <a class="nav-link" href="usuarios.php">
                 <span data-feather="file"></span>
@@ -180,16 +181,11 @@
         obj["accion"] = "editar_usuarios";
         $(this).text("Guardar").removeData("editar").removeData("registro");
       }
-   
 
-       $.post('includes/_funciones.php', obj, function(a) {
-
-        if (a == "1") {
-           $("#correcto").html("Usuario Insertado Correctamente"); 
-           $("#form_data")[0].reset();
-         } else {
-           $("#error").html("Error al Insertar Usuario"); 
-         }
+      $.post('includes/_funciones.php', obj, function(response) {
+        alert(response);
+        change_view();
+        $("#form_data")[0].reset();
 
        });
     });
@@ -249,3 +245,10 @@
   </script>
 </body>
 </html>
+
+<?php 
+ }
+  else 
+  {
+header("Location:index.php");
+  }
