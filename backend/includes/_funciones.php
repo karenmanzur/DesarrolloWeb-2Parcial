@@ -22,15 +22,15 @@ switch ($_POST["accion"]) {
 		break;
 
 		case 'eliminar_registro':
-		eliminar_usuario($_POST['registro']);
+		eliminar_usuario($_POST['id']);
 		break;
 
 		case 'editar_usuarios':
-		editar_usuarios($_POST['registro']);
+		editar_usuarios($_POST['id']);
 		break;
 
 		case 'consultar_registro':
-		consultar_registro($_POST['registro']);
+		consultar_registro($_POST['id']);
 		break;
 
 	default:
@@ -84,18 +84,24 @@ function eliminar_usuario($id){
 function login(){
 		// Conectar a la base de datos
 	global $mysqli;
-		// Si usuario y contraseña están vacíos imprimir 3 
-	$consulta = "SELECT * FROM USUARIOS WHERE correo_usr ='$correo'";
-	$resultado = mysqli($mysqli, $consulta);
+		// Si usuario y contraseña están vacíos imprimir 3
+	$correo = $_POST['correo']; 
+	$password = $_POST['pswd'];
+	$consulta = "SELECT * FROM usuarios WHERE correo_usr ='$correo'";
+	$resultado = mysqli_query($mysqli, $consulta);
 	$fila = mysqli_fetch_array($resultado);
 	if($fila["pswd_usr"] == "$password" ){
+		
+		session_start();
+        error_reporting(0);
+        $_SESSION['usuario'] = $correo;
+        header("location: ../usuarios.php");   
+      }
+    else 
+      {
+        echo "Error en la contraseña o usuario";
+      }
 	}
-		// Consultar a la base de datos que el usuario exista
-			// Si el usuario existe, consultar que el password, sea correcto
-				// Si el password es correcto, imprimir 1
-				// Si el password no es correcto, imprimir 0
-			// Si el Usuario no existe, Imprimir 2
-}
 
 function insertar_usuarios(){
     $nombre = $_POST['nombre'];

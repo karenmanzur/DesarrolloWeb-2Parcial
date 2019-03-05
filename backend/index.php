@@ -33,8 +33,8 @@
 			let password = $("#inputPassword").val();
 			let obj = {
 				"accion" : "login",
-				"usuario" : correo,
-				"password" :  password
+				"correo" : correo,
+				"pswd" :  password
 			};
 			$.post("includes/_funciones.php", obj, function(){
 				

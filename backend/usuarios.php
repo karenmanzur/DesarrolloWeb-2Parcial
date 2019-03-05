@@ -1,8 +1,9 @@
  <?php
   session_start();
   error_reporting(0);
-  $varsesion = $_SESSION['user'];
+  $varsesion = $_SESSION['usuario'];
   if (isset($varsesion)){
+
   ?>
 
 <!doctype html>
@@ -20,35 +21,10 @@
   <link href="css/estilo.css" rel="stylesheet">
 </head>
 <body>
-  <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
-    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-    <ul class="navbar-nav px-3">
-      <li class="nav-item text-nowrap">
-        <a class="nav-link" href="#">Sign out</a>
-      </li>
-    </ul>
-  </nav>
-
-  <div class="container-fluid">
-    <div class="row">
-      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-        <div class="sidebar-sticky">
-          <ul class="nav flex-column">
-            <li class="nav-item">
-              <a class="nav-link" href="usuarios.php">
-                <span data-feather="file"></span>
-                Usuarios
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="slider.php">
-                <span data-feather="shopping-cart"></span>
-                Slider
-              </a>
-            </li>
-      </nav>
-
+  <?php 
+    include("includes/_navbar.php");
+   ?>
+  
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4" id="main">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h1 class="h2">Dashboard</h1>
@@ -178,13 +154,13 @@
         }
       });
       if($(this).data("editar") == 1){
+        obj["id"]  = $(this).data('id');
         obj["accion"] = "editar_usuarios";
-        $(this).text("Guardar").removeData("editar").removeData("registro");
+        $(this).text("Guardar").removeData("editar").removeData("id");
       }
 
       $.post('includes/_funciones.php', obj, function(response) {
         alert(response);
-        change_view();
         $("#form_data")[0].reset();
 
        });
@@ -197,7 +173,7 @@
           let id = $(this).data('id'),
           obj = {
             "accion":"eliminar_registro",
-            "registro" : id
+            "id" : id
           };
           $.post("includes/_funciones.php",obj,function(r){
             if (r == "1") {
@@ -220,17 +196,19 @@
           let id = $(this).data('id');
           obj = {
             "accion":"consultar_registro",
-            "registro" : id
+            "id" : id
           };
           $("#form_data")[0].reset();
           change_view('insert_data');
-          $("#guardar_datos").text("Editar").data("editar", 1);
+          $("#guardar_datos").text("Editar").data("editar", 1).data("id", id);
           $.post("includes/_funciones.php",obj,function(r){
             $("#nombre").val(r.nombre_usr);
             $("#correo").val(r.correo_usr);
             $("#telefono").val(r.telefono_usr);
             $("#password").val(r.pswd_usr);
           },"JSON");
+          console.log(obj);
+          console.log(id);
           });
 
   $(document).ready(function(){
@@ -246,7 +224,7 @@
 </body>
 </html>
 
-<?php 
+<?php
  }
   else 
   {
