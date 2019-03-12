@@ -3,7 +3,6 @@
   error_reporting(0);
   $varsesion = $_SESSION['usuario'];
   if (isset($varsesion)){
-
   ?>
 
 <!doctype html>
@@ -60,11 +59,12 @@
                   <label for="correo">Correo Electrónico</label>
                   <input type="email" id="correo" name="correo" class="form-control">
                 </div>
-                <div class="form-group"></div>
-                <input type="file" name="foto" id="foto">
-                <input type="text" name="ruta" id="ruta">
+                <div class="form-group">
+                 <input type="file" id="foto" name="foto"  accept="image/x-png,image/gif,image/jpeg">
+                <input type="hidden" name="ruta" id="ruta" readonly="readonly">
               </div>
-              <div id="preview"></div>
+                 <div id="preview"></div>
+              </div>
               <div class="col">
                 <div class="form-group">
                   <label for="telefono">Teléfono</label>
@@ -92,8 +92,8 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
   <script>
+    
     function change_view(vista = 'show_data'){
       $("#main").find(".view").each(function(){
         // $(this).addClass("d-none");
@@ -186,9 +186,7 @@
 
           });
 
-          }else {
-           $("#error").html("Error al Eliminar Usuario"); 
-         }
+          }
       });
 
   $("#list_usuarios").on("click",".editar_registro",function(e){
@@ -216,10 +214,36 @@
       change_view();
     });
 
+     //Para subir las fotos
+$("#foto").on("change", function (e) {
+      let formDatos = new FormData($("#form_data")[0]);
+      formDatos.append("accion", "carga_foto");
+      $.ajax({
+        url: "includes/_funciones.php",
+        type: "POST",
+        data: formDatos,
+        contentType: false,
+        processData: false,
+        success: function (datos) {
+          let respuesta = JSON.parse(datos);
+          if(respuesta.status == 0){
+            alert("No se cargó la foto");
+          }
+          let template = `
+          <img src="${respuesta.archivo}" alt="" class="img-fluid" />
+          `;
+          $("#ruta").val(respuesta.archivo);
+          $("#preview").html(template);
+        }
+      });
+    });
+
     $("#main").find(".cancelar").click(function(){
       change_view();
       $("#form_data")[0].reset();
     });
+
+
   </script>
 </body>
 </html>

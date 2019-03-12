@@ -36,8 +36,12 @@
 				"correo" : correo,
 				"pswd" :  password
 			};
-			$.post("includes/_funciones.php", obj, function(){
-				
+			$.post("includes/_funciones.php", obj, function(r){
+				if(r == "1"){
+					window.location.replace("usuarios.php");
+				}else{
+					console.log("No concect");
+				}
 			});
 
 			

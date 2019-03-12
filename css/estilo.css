@@ -51,6 +51,7 @@ header{
   font-size: .88rem;
   font-weight: normal;
 }
+
 section .download  {
   padding: 60px 0 100px; 
 }
@@ -283,3 +284,22 @@ footer {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
 }
+
+ #button-movil, .menu-header-movil{display: none;}
+
+@media (min-width: 320px) and (max-width: 577px) {
+  #button-movil{color: #fff; font-size: 30px; position: absolute; right: 10px; top: 10px; display: block;}
+  #logo{display: block; margin-top: 20px;}
+  .menu-header-principal{display: none;}
+  .menu-header-movil{display: block;}
+ }
+
+@media (min-width: 768px) and (max-width: 991px) {
+ header{background: red;}
+}
+
+
+@media (min-width: 992px) and (max-width: 1199px){}
+
+
+@media (min-width: 1200px) { }

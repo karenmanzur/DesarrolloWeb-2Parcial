@@ -21,6 +21,22 @@ switch ($_POST["accion"]) {
 		insertar_slider();
 		break;
 
+		case 'consultar_test':
+		consultar_test($_POST['id']);
+		break;
+
+		case 'editar_slider':
+		editar_slider($_POST['id']);
+		break;
+
+		case 'insertar_slider':
+		insertar_slider();
+		break;
+
+		case 'eliminar_slider':
+		eliminar_slider($_POST['id']);
+		break;
+
 		case 'eliminar_registro':
 		eliminar_usuario($_POST['id']);
 		break;
@@ -33,10 +49,35 @@ switch ($_POST["accion"]) {
 		consultar_registro($_POST['id']);
 		break;
 
+		case 'carga_foto':
+		carga_foto();
+		break;
+
 	default:
 			# code...
 	break;
 }
+
+function carga_foto(){
+	if (isset($_FILES["foto"])) {
+		$file = $_FILES["foto"];
+		$nombre = $_FILES["foto"]["name"];
+		$temporal = $_FILES["foto"]["tmp_name"];
+		$tipo = $_FILES["foto"]["type"];
+		$tam = $_FILES["foto"]["size"];
+		$dir = "../../img/usuarios/";
+		$respuesta = [
+			"archivo" => "../img/usuarios/logotipo.png",
+			"status" => 0
+		];
+		if(move_uploaded_file($temporal, $dir.$nombre)){
+			$respuesta["archivo"] = "../img/usuarios/".$nombre;
+			$respuesta["status"] = 1;
+		}
+		echo json_encode($respuesta);
+	}
+}
+
 function consultar_usuarios(){
 	global $mysqli;
 	$consulta = "SELECT * FROM usuarios";
@@ -95,7 +136,8 @@ function login(){
 		session_start();
         error_reporting(0);
         $_SESSION['usuario'] = $correo;
-        header("location: ../usuarios.php");   
+  
+        echo "1"; 
       }
     else 
       {
@@ -133,11 +175,22 @@ function consultar_slider(){
 	echo json_encode($arreglo); //Imprime el JSON ENCODEADO
 }
 
+function consultar_test($id){
+	global $mysqli;
+	$consulta = "SELECT * FROM slider WHERE id_slider = $id  LIMIT 1";
+	$resultado = mysqli_query($mysqli, $consulta);
+	$arreglo = [];
+	while($fila = mysqli_fetch_array($resultado)){
+		array_push($arreglo, $fila);
+	}
+	echo json_encode($arreglo); //Imprime el JSON ENCODEADO
+}
+
 function insertar_slider(){
 	global $mysqli;
-	$img_slider = $_POST["imagen"];
+	$img_slider = $_POST["ruta"];
 	$quote_slider = $_POST["texto"];	
-	$name_slider = $_POST["nombre"];	
+	$name_slider = $_POST["nombre"];
 	$consulta1 = "INSERT INTO slider VALUES('','$img_slider','$quote_slider','$name_slider')";
 	$resultado1 = mysqli_query($mysqli, $consulta1);
 	$array = [];
@@ -145,6 +198,30 @@ function insertar_slider(){
 		array_push($arreglo1, $fila1);
 	}
 	echo json_encode($arreglo1); //Imprime el JSON ENCODEADO
+}
+
+ function eliminar_slider($id){
+  global $mysqli;
+  $query = "DELETE FROM slider WHERE id_slider = $id";
+  $resultado = mysqli_query($mysqli, $query);
+  if ($resultado) {
+    echo "1";
+  } else {
+    echo "0";
+  }
+}
+
+function editar_slider($id){
+  global $mysqli;
+  extract($_POST);
+  $consulta = "UPDATE slider SET img_slider = '$ruta', quote_slider = '$texto', 
+  name_slider = '$nombre' WHERE id_slider = '$id' ";
+  $resultado = mysqli_query($mysqli, $consulta);
+  if($resultado){
+    echo "Se editó correctamente";
+  }else{
+    echo "Se generó un error, intentalo nuevamente";
+  }
 }
 	  
 ?>
